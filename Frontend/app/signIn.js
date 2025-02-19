@@ -5,8 +5,10 @@ import { Octicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import CustomKeyboard from '@/components/CustomKeyboard';
+import { useAuth } from '@/routes/AuthContext';
 const SignIn = () => {
     const router = useRouter();
+    const {login} = useAuth();
     const [isLoading, setIsLoading] = useState(false);
 
     const emailRef = useRef("");
@@ -17,6 +19,14 @@ const SignIn = () => {
             return;
         }
         //login
+        setIsLoading(true);
+        const response = await login(emailRef.current,passwordRef.current);
+        setIsLoading(false);
+        if(!response.success){
+            alert(`Login Error: ${response.msg}`);
+            return;
+        }
+        
 
 
     }
